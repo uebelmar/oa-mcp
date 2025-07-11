@@ -1,0 +1,185 @@
+name: Release and Publish to NPM
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      id-token: write  # Required for npm provenance
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+          
+      - name: Get release version
+        id: get_version
+        run: |
+          # Extract version from GitHub release tag (remove 'v' prefix if present)
+          VERSION=${GITHUB_REF#refs/tags/}
+          VERSION=${VERSION#v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Release version: $VERSION"
+          
+      - name: Update package.json version
+        run: |
+          cd mcpWinCCOA
+          npm version ${{ steps.get_version.outputs.version }} --no-git-tag-version
+          
+      - name: Install TypeScript globally
+        run: npm install -g typescript
+          
+      - name: Install dependencies
+        run: |
+          cd mcpWinCCOA
+          npm install
+          
+      - name: Verify TypeScript config
+        run: |
+          cd mcpWinCCOA
+          if [ ! -f tsconfig.json ]; then
+            echo "Error: tsconfig.json not found!"
+            exit 1
+          fi
+          echo "TypeScript configuration found"
+        
+      - name: Build project
+        run: |
+          cd mcpWinCCOA
+          # Compile TypeScript to JavaScript
+          tsc
+          
+          # Make main entry points executable
+          chmod 755 build/index_stdio.js
+          chmod 755 build/index_http.js
+          
+      - name: Update package.json for publishing
+        run: |
+          cd mcpWinCCOA
+          # Update binary entries to point to correct files
+          npm pkg set bin.winccoa-mcp-stdio="./build/index_stdio.js"
+          npm pkg set bin.winccoa-mcp-http="./build/index_http.js"
+          
+    
+          
+          # Add package metadata
+          npm pkg set name="@etm/winccoa-mcp-server"
+          npm pkg set description="MCP Server for WinCC OA with field-specific configurations"
+          npm pkg set keywords[0]="mcp"
+          npm pkg set keywords[1]="winccoa"
+          npm pkg set keywords[2]="scada"
+          npm pkg set keywords[3]="automation"
+          npm pkg set author="ETM Control GesmbH"
+          npm pkg set license="ISC"
+          npm pkg set repository.type="git"
+          npm pkg set repository.url="git+https://github.com/winccoa/winccoa-ae-js-mcpserver.git"
+          npm pkg set homepage="https://github.com/winccoa/winccoa-ae-js-mcpserver#readme"
+          npm pkg set bugs.url="https://github.com/winccoa/winccoa-ae-js-mcpserver/issues"
+          
+          # Add files to include in package
+          npm pkg set files[0]="build"
+          npm pkg set files[1]="../fields"
+          npm pkg set files[2]="README.md"
+          npm pkg set files[3]="README_PROJECT_CONFIG.md"
+          
+      - name: Create README for npm
+        run: |
+          cd mcpWinCCOA
+          cat > README.md << 'EOF'
+          # WinCC OA MCP Server
+          
+          A Model Context Protocol (MCP) server for interacting with Siemens WinCC OA systems.
+          
+          ## Features
+          
+          - Field-specific configurations (Oil & Gas, Transportation, etc.)
+          - Project-specific overrides for end customers
+          - Comprehensive datapoint management
+          - Safety rule validation
+          - CNS/UNS tree management
+          
+          ## Installation
+          
+          ```bash
+          npm install -g @etm/winccoa-mcp-server
+          ```
+          
+          **Note**: This package requires WinCC OA to be installed on the system.
+          
+          ## Usage
+          
+          ### STDIO Mode
+          ```bash
+          winccoa-mcp-stdio
+          ```
+          
+          ### HTTP Mode
+          ```bash
+          winccoa-mcp-http
+          ```
+          
+          ## Configuration
+          
+          Set field and project configurations using environment variables:
+          
+          ```bash
+          export WINCCOA_FIELD=oil
+          export WINCCOA_PROJECT=/path/to/project.md
+          ```
+          
+          ## Available Fields
+          
+          - `oil` - Oil & Gas industry
+          - `transport` - Transportation systems
+          - `default` - Generic configuration
+          
+          ## Documentation
+          
+          See the [GitHub repository](https://github.com/winccoa/winccoa-ae-js-mcpserver) for detailed documentation.
+          
+          ## License
+          
+          ISC
+          EOF
+          
+      - name: Verify build
+        run: |
+          cd mcpWinCCOA
+          echo "Checking build output..."
+          ls -la build/
+          echo "Package.json contents:"
+          cat package.json
+          
+      - name: Publish to npm
+        run: |
+          cd mcpWinCCOA
+          npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          
+      - name: Create GitHub release assets
+        run: |
+          cd mcpWinCCOA
+          # Create a tarball for GitHub release
+          npm pack
+          mv *.tgz winccoa-mcp-server-${{ steps.get_version.outputs.version }}.tgz
+          
+      - name: Upload release assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./mcpWinCCOA/winccoa-mcp-server-${{ steps.get_version.outputs.version }}.tgz
+          asset_name: winccoa-mcp-server-${{ steps.get_version.outputs.version }}.tgz
+          asset_content_type: application/gzip

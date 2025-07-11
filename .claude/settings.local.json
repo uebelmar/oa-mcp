@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(grep:*)",
+      "Bash(npm install:*)",
+      "Bash(find:*)",
+      "Bash(chmod:*)",
+      "Bash(npm run build:*)",
+      "Bash(node build/index_http.js)",
+      "Bash(node:*)",
+      "Bash(npm ls:*)",
+      "Bash(cp:*)",
+      "Bash(ls:*)"
+    ],
+    "deny": []
+  }
+}
