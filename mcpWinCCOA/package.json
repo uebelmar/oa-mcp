@@ -58,6 +58,11 @@
   "peerDependencies": {
     "winccoa-manager": "*"
   },
+  "peerDependenciesMeta": {
+    "winccoa-manager": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@types/node": "^18.0.0",
     "typescript": "^5.8.3"
