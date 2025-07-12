@@ -44,7 +44,7 @@ jobs:
           cd mcpWinCCOA
           # Use --ignore-scripts to prevent postinstall from running during build
           # postinstall should only run when users install the published package
-          npm ci --ignore-scripts
+          npm install --ignore-scripts
           
       - name: Verify TypeScript config
         run: |
