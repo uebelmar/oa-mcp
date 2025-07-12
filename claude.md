@@ -55,16 +55,8 @@ The individual functions of WinCC OA run in so-called **managers**. Relevant man
 
 **Rules**:
 1. **NEVER** add `winccoa-manager` to `dependencies` in package.json - it will bundle the proprietary code
-2. **ALWAYS** keep `winccoa-manager` as a `peerDependency` only
-3. **For local testing**: Create a separate test setup or use mock implementations
-4. **For production**: The postinstall script handles dependency resolution from customer's local WinCC OA installation
 
 **Why**: Including winccoa-manager in dependencies would:
 - Bundle proprietary Siemens code in the npm package
 - Violate licensing agreements
 - Make the package unpublishable to public npm registry
-
-**Local Testing**: To test locally without bundling:
-- Use mock implementations of winccoa-manager functions
-- Create a separate test environment with isolated dependencies
-- Test the postinstall script functionality separately

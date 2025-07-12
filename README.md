@@ -26,6 +26,7 @@ The WinCC OA MCP Server bridges the gap between modern AI technologies and indus
 
 ```bash
 # In your WinCC OA project directory
+# change into the javascript directory. create if not exist.
 cd <OA_ProjPath>/javascript
 mkdir mcpServer
 cd mcpServer
@@ -59,9 +60,9 @@ MCP_HTTP_PORT=3000
 MCP_HTTP_HOST=0.0.0.0
 
 # Choose your industry
-WINCCOA_FIELD=oil        # For Oil & Gas
+WINCCOA_FIELD=default        # default instructions
 # WINCCOA_FIELD=transport # For Transportation systems
-# WINCCOA_FIELD=default   # For other industries
+# WINCCOA_FIELD=oil   # For Oil & Gas
 ```
 
 ### Step 4: Configure WinCC OA Manager

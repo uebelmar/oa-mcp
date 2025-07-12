@@ -41,31 +41,7 @@ export const serverConfig = {
     }
   },
   
-  // WinCC OA specific configuration
-  winccoa: {
-    // Manager configuration
-    manager: {
-      num: parseInt(process.env.WINCCOA_MANAGER_NUM || '1'),
-      name: process.env.WINCCOA_MANAGER_NAME || 'mcp_server',
-      startOptions: process.env.WINCCOA_START_OPTIONS || ''
-    },
-    
-    // Connection configuration
-    connection: {
-      timeout: parseInt(process.env.WINCCOA_CONNECT_TIMEOUT || '30000'), // 30 seconds
-      retryAttempts: parseInt(process.env.WINCCOA_RETRY_ATTEMPTS || '3'),
-      retryDelay: parseInt(process.env.WINCCOA_RETRY_DELAY || '5000') // 5 seconds
-    }
-  },
-  
-  // Logging configuration
-  logging: {
-    level: process.env.LOG_LEVEL || 'info', // 'debug', 'info', 'warn', 'error'
-    file: process.env.LOG_FILE_PATH,
-    maxSize: process.env.LOG_MAX_SIZE || '10m',
-    maxFiles: parseInt(process.env.LOG_MAX_FILES || '5')
-  },
-  
+
   // Security configuration
   security: {
     // Rate limiting
@@ -82,18 +58,6 @@ export const serverConfig = {
       blacklist: process.env.IP_BLACKLIST ? process.env.IP_BLACKLIST.split(',') : []
     }
   },
-  
-  // Performance configuration
-  performance: {
-    // Request timeout
-    requestTimeout: parseInt(process.env.REQUEST_TIMEOUT || '300000'), // 5 minutes
-    
-    // Connection pooling
-    connectionPool: {
-      min: parseInt(process.env.POOL_MIN || '2'),
-      max: parseInt(process.env.POOL_MAX || '10')
-    }
-  }
 };
 
 

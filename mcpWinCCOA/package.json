@@ -8,7 +8,7 @@
     "winccoa-mcp-http": "./build/index_http.js"
   },
   "scripts": {
-    "build": "tsc && chmod 755 build/index_stdio.js && chmod 755 build/index_http.js",
+    "build": "tsc && chmod 755 build/index_stdio.js && chmod 755 build/index_http.js && cp config/demo-project-instructions.md build/config/ && cp -r src/fields build/",
     "inspect": "npx @modelcontextprotocol/inspector",
     "start": "node build/index_stdio.js",
     "start:http": "node build/index_http.js",
@@ -16,13 +16,9 @@
   },
   "files": [
     "build",
-    "../fields",
-    "scripts",
+    "src/fields",
     "config",
-    "deploy",
     "README.md",
-    "README_PROJECT_CONFIG.md",
-    "README_SERVER_DEPLOYMENT.md",
     ".env.example"
   ],
   "keywords": [
@@ -33,7 +29,7 @@
     "siemens",
     "industrial"
   ],
-  "author": "ETM",
+  "author": "ETM Control GesmbH",
   "license": "ISC",
   "repository": {
     "type": "git",

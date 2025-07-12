@@ -11,7 +11,6 @@
       "Bash(node build/index_http.js)",
       "Bash(node:*)",
       "Bash(npm ls:*)",
-      "Bash(cp:*)",
       "Bash(ls:*)"
     ],
     "deny": []

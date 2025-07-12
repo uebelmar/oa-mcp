@@ -19,7 +19,7 @@ const __dirname = path.dirname(__filename);
  * @returns {Promise<Object>} Object with field names as keys and content as values
  */
 export async function loadFieldConfigurations() {
-  const fieldsDir = path.join(__dirname, '..', '..', 'fields');
+  const fieldsDir = path.join(__dirname, 'fields');
   const configs = {};
   
   try {
