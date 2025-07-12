@@ -21,7 +21,7 @@
     "config",
     "README.md",
     ".env.example",
-    "postinstall.js"
+    "postinstall.cjs"
   ],
   "keywords": [
     "mcp",
