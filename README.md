@@ -44,9 +44,10 @@ npm install file:C:/Siemens/Automation/WinCC_OA/3.20/javascript/winccoa-manager
 
 ### Step 3: Configure Settings
 
-Edit the `.env` file:
+Copy and edit the environment file:
 
 ```bash
+cp .env.example .env
 nano .env
 ```
 

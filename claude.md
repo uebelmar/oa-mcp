@@ -60,3 +60,11 @@ The individual functions of WinCC OA run in so-called **managers**. Relevant man
 - Bundle proprietary Siemens code in the npm package
 - Violate licensing agreements
 - Make the package unpublishable to public npm registry
+
+### WinCC OA JavaScript Manager Configuration
+
+**IMPORTANT**: The WinCC OA JavaScript Manager automatically looks in the `javascript/` directory of the project. When configuring the manager:
+
+- **Script Path**: Use relative paths from the `javascript/` directory (e.g., `mcpServer/index_http.js`)
+- **File Location**: Scripts must be placed in `<OA_ProjPath>/javascript/` or subdirectories
+- **Manager automatically prefixes**: The manager adds the `javascript/` path automatically

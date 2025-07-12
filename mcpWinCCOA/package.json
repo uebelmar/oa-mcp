@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "tsc && chmod 755 build/index_stdio.js && chmod 755 build/index_http.js && cp config/demo-project-instructions.md build/config/ && cp -r src/fields build/",
+    "postinstall": "node postinstall.js",
     "inspect": "npx @modelcontextprotocol/inspector",
     "start": "node build/index_stdio.js",
     "start:http": "node build/index_http.js",
@@ -19,7 +20,8 @@
     "src/fields",
     "config",
     "README.md",
-    ".env.example"
+    ".env.example",
+    "postinstall.js"
   ],
   "keywords": [
     "mcp",
