@@ -35,20 +35,31 @@ cd mcpServer
 npm install @etm/winccoa-mcp-server
 ```
 
+**Note for Windows users:** You may need to run the command prompt as Administrator for npm install commands.
+
 ### Step 2: Install WinCCOA-Manager
 
-Replace the path with your installation path
-```
+Replace the path with your installation path:
+```bash
 npm install file:C:/Siemens/Automation/WinCC_OA/3.20/javascript/winccoa-manager
 ```
+
+**Note for Windows users:** You may need to run the command prompt as Administrator for npm install commands.
 
 ### Step 3: Configure Settings
 
 Copy and edit the environment file:
 
+**Linux/macOS:**
 ```bash
 cp .env.example .env
 nano .env
+```
+
+**Windows:**
+```cmd
+copy .env.example .env
+notepad .env
 ```
 
 Required settings:
@@ -101,19 +112,46 @@ Add entry:
 ```
 
 
-## Security for Your Plant
+## Project-Specific Instructions
 
+Every industrial facility is unique. While our industry templates provide a solid foundation, your specific plant may have unique requirements, custom naming conventions, or special operational procedures that need to be respected by the AI assistant.
 
-### Define Your Own Rules
+**Create Your Custom Rules:**
 
-Create plant-specific rules in a Markdown file:
+The MCP Server allows you to define project-specific instructions that override and extend the industry templates. These instructions help the AI understand your specific:
 
+- **Naming Conventions** - Your unique datapoint naming patterns
+- **Operational Limits** - Plant-specific temperature, pressure, and flow ranges  
+- **Equipment Specifics** - Unique equipment types and their handling requirements
+- **Process Knowledge** - Plant-specific process optimization guidelines
+- **Maintenance Procedures** - Custom maintenance schedules and requirements
 
+**Implementation:**
 
-Configure in `.env`:
+1. Create a Markdown file with your plant-specific rules:
+```markdown
+# My Plant - Custom Instructions
+
+## Equipment Naming
+- All reactors follow pattern: `REACTOR_R[0-9]{3}_*`
+- Compressors use: `COMP_[ABC][0-9]{2}_*`
+
+## Operational Guidelines
+- Target efficiency for Unit 100: 92-95%
+- Steam pressure optimal range: 15-18 bar
+- Reactor temperatures should stay within 300-350°C range
+
+## Process Optimization
+- Monitor pump efficiency weekly
+- Check valve positions during shift changes
+```
+
+2. Configure in `.env`:
 ```env
 WINCCOA_PROJECT_INSTRUCTIONS=./config/my-plant-rules.md
 ```
+
+The AI will now combine your custom instructions with the industry template, giving priority to your project-specific rules when conflicts arise.
 
 ## Industry Field Templates
 
@@ -122,7 +160,7 @@ The MCP Server comes with pre-configured templates for different industries. The
 ### What are Field Templates?
 
 Field templates are pre-built configurations that:
-jj     ,,,,,,,,,,,,,,,,,,,,,- **Set operational limits** - Temperature ranges, pressure limits, flow rates
+- **Set operational limits** - Temperature ranges, pressure limits, flow rates
 - **Include validation rules** - What needs double-checking before changes
 - **Provide AI guidance** - Industry-specific knowledge for smarter assistance
 
@@ -161,7 +199,7 @@ WINCCOA_FIELD=oil
 # For Transportation systems
 WINCCOA_FIELD=transport
 
-# For other industries (customize with your own rules)
+# Default Instructions
 WINCCOA_FIELD=default
 ```
 
